@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f7f8fc" />
+    <title>The React Quiz</title>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+      :root {
+        color-scheme: light;
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        color: #1b2440;
+        background: #f7f8fc;
+        font-synthesis: none;
+        text-rendering: optimizeLegibility;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        min-width: 320px;
+        min-height: 100vh;
+        margin: 0;
+        background:
+          radial-gradient(ellipse at 12% 0%, rgba(97, 218, 251, 0.13), transparent 34rem),
+          #f7f8fc;
+      }
+
+      button {
+        font: inherit;
+      }
+
+      .app-shell {
+        width: min(100% - 40px, 900px);
+        margin: 0 auto;
+        padding: 38px 0 60px;
+      }
+
+      .app-header {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+        margin-bottom: 28px;
+      }
+
+      .react-mark {
+        display: grid;
+        width: 48px;
+        height: 48px;
+        place-items: center;
+        border-radius: 15px;
+        background: #e4f8fd;
+        color: #087c9d;
+        font-size: 28px;
+      }
+
+      .brand {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 800;
+        letter-spacing: -0.04em;
+      }
+
+      .brand span {
+        color: #0884a7;
+      }
+
+      .eyebrow {
+        margin: 0 0 7px;
+        color: #66718d;
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .intro {
+        margin-bottom: 25px;
+      }
+
+      .intro h2 {
+        margin: 0;
+        font-size: clamp(28px, 5vw, 40px);
+        letter-spacing: -0.055em;
+        line-height: 1.1;
+      }
+
+      .intro p:last-child {
+        margin: 10px 0 0;
+        color: #66718d;
+        line-height: 1.6;
+      }
+
+      .quiz-card {
+        overflow: hidden;
+        border: 1px solid #e7eaf2;
+        border-radius: 22px;
+        background: rgba(255, 255, 255, 0.94);
+        box-shadow: 0 18px 50px rgba(31, 45, 83, 0.08);
+      }
+
+      .quiz-top {
+        padding: 22px 26px 18px;
+        border-bottom: 1px solid #edf0f6;
+      }
+
+      .progress-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 11px;
+        color: #66718d;
+        font-size: 13px;
+        font-weight: 650;
+      }
+
+      .progress-row strong {
+        color: #283654;
+      }
+
+      .progress-track {
+        height: 8px;
+        overflow: hidden;
+        border-radius: 99px;
+        background: #edf0f6;
+      }
+
+      .progress-fill {
+        height: 100%;
+        border-radius: inherit;
+        background: linear-gradient(90deg, #087fa1, #5bd1eb);
+        transition: width 180ms ease;
+      }
+
+      .question-list {
+        display: grid;
+        gap: 0;
+        padding: 0 26px;
+      }
+
+      .question {
+        padding: 23px 0 24px;
+        border-bottom: 1px solid #edf0f6;
+      }
+
+      .question:last-child {
+        border-bottom: 0;
+      }
+
+      .question-title {
+        display: flex;
+        align-items: flex-start;
+        gap: 13px;
+        margin: 0 0 15px;
+        font-size: 16px;
+        font-weight: 750;
+        line-height: 1.5;
+      }
+
+      .question-number {
+        display: inline-grid;
+        flex: 0 0 28px;
+        width: 28px;
+        height: 28px;
+        place-items: center;
+        border-radius: 9px;
+        background: #eff8fb;
+        color: #087c9d;
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .choices {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 9px;
+        padding-left: 41px;
+      }
+
+      .choice {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-height: 45px;
+        padding: 10px 12px;
+        border: 1px solid #e6eaf2;
+        border-radius: 11px;
+        background: #fff;
+        color: #46516c;
+        cursor: pointer;
+        text-align: left;
+        transition: border-color 140ms ease, background 140ms ease, color 140ms ease;
+      }
+
+      .choice:hover:not(:disabled) {
+        border-color: #75cfe3;
+        background: #f5fcfe;
+      }
+
+      .choice.selected {
+        border-color: #0783a6;
+        background: #eefafe;
+        color: #076d8a;
+      }
+
+      .choice:disabled {
+        cursor: default;
+      }
+
+      .choice-indicator {
+        display: inline-grid;
+        flex: 0 0 19px;
+        width: 19px;
+        height: 19px;
+        place-items: center;
+        border: 1px solid #cbd2e0;
+        border-radius: 50%;
+        color: white;
+        font-size: 12px;
+        font-weight: 900;
+      }
+
+      .choice.selected .choice-indicator {
+        border-color: #0783a6;
+        background: #0783a6;
+      }
+
+      .choice.correct {
+        border-color: #8bd4ad;
+        background: #effaf3;
+        color: #176c3b;
+      }
+
+      .choice.correct .choice-indicator {
+        border-color: #25894d;
+        background: #25894d;
+      }
+
+      .choice.incorrect {
+        border-color: #f0a2a2;
+        background: #fff3f2;
+        color: #9a3535;
+      }
+
+      .choice.incorrect .choice-indicator {
+        border-color: #c34e4e;
+        background: #c34e4e;
+      }
+
+      .choice-key {
+        flex: 1;
+      }
+
+      .answer-note {
+        margin: 10px 0 0 41px;
+        color: #62708b;
+        font-size: 13px;
+        line-height: 1.5;
+      }
+
+      .quiz-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 19px 26px;
+        border-top: 1px solid #edf0f6;
+        background: #fcfcfe;
+      }
+
+      .footer-hint {
+        margin: 0;
+        color: #737d95;
+        font-size: 13px;
+        line-height: 1.5;
+      }
+
+      .primary-button,
+      .secondary-button {
+        min-height: 45px;
+        padding: 0 18px;
+        border: 0;
+        border-radius: 11px;
+        font-weight: 750;
+        cursor: pointer;
+        transition: transform 120ms ease, opacity 120ms ease;
+      }
+
+      .primary-button {
+        flex: 0 0 auto;
+        background: #087f9f;
+        color: #fff;
+        box-shadow: 0 7px 16px rgba(8, 127, 159, 0.19);
+      }
+
+      .primary-button:hover:not(:disabled),
+      .secondary-button:hover {
+        transform: translateY(-1px);
+      }
+
+      .primary-button:disabled {
+        opacity: 0.45;
+        cursor: not-allowed;
+        box-shadow: none;
+      }
+
+      .secondary-button {
+        border: 1px solid #dfe4ed;
+        background: #fff;
+        color: #35425f;
+      }
+
+      .results-banner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        margin-bottom: 18px;
+        padding: 19px 22px;
+        border: 1px solid #ccecf3;
+        border-radius: 16px;
+        background: #f0fbfd;
+      }
+
+      .results-banner h3 {
+        margin: 0;
+        font-size: 18px;
+      }
+
+      .results-banner p {
+        margin: 5px 0 0;
+        color: #66718d;
+        font-size: 14px;
+      }
+
+      .score {
+        flex: 0 0 auto;
+        color: #087c9d;
+        font-size: 27px;
+        font-weight: 850;
+        letter-spacing: -0.05em;
+      }
+
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+
+      @media (max-width: 620px) {
+        .app-shell {
+          width: min(100% - 24px, 900px);
+          padding-top: 23px;
+        }
+
+        .quiz-top,
+        .question-list {
+          padding-right: 17px;
+          padding-left: 17px;
+        }
+
+        .question {
+          padding: 19px 0;
+        }
+
+        .choices {
+          grid-template-columns: 1fr;
+          padding-left: 0;
+        }
+
+        .answer-note {
+          margin-left: 0;
+        }
+
+        .quiz-footer {
+          align-items: stretch;
+          flex-direction: column;
+          padding: 17px;
+        }
+
+        .primary-button {
+          width: 100%;
+        }
+
+        .results-banner {
+          align-items: flex-start;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          scroll-behavior: auto !important;
+          transition-duration: 0.01ms !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      const questions = [
+        {
+          question: "What is React primarily used for?",
+          choices: [
+            "Building user interfaces",
+            "Managing databases",
+            "Hosting web servers",
+            "Writing CSS stylesheets"
+          ],
+          answer: 0,
+          explanation: "React is a JavaScript library for building component-based user interfaces."
+        },
+        {
+          question: "What is a React component?",
+          choices: [
+            "A reusable piece of UI",
+            "A browser extension",
+            "A CSS selector",
+            "A type of database table"
+          ],
+          answer: 0,
+          explanation: "Components are reusable building blocks that describe parts of the interface."
+        },
+        {
+          question: "Which hook lets a function component keep and update local state?",
+          choices: ["useEffect", "useState", "useMemo", "useContext"],
+          answer: 1,
+          explanation: "useState returns a state value and a setter that schedules an update."
+        },
+        {
+          question: "When should you use the useEffect hook?",
+          choices: [
+            "To perform side effects after rendering",
+            "To create a new HTML element",
+            "To define a component's props",
+            "To replace every event handler"
+          ],
+          answer: 0,
+          explanation: "useEffect is for synchronizing a component with external systems, such as subscriptions or browser APIs."
+        },
+        {
+          question: "What are props in React?",
+          choices: [
+            "Inputs passed from a parent component to a child",
+            "Values that can only be changed by CSS",
+            "A built-in database for each component",
+            "The return value of useEffect"
+          ],
+          answer: 0,
+          explanation: "Props let a parent pass data and callbacks to a child component."
+        },
+        {
+          question: "Why should list items have a key prop?",
+          choices: [
+            "It helps React identify items between updates",
+            "It encrypts the item's text",
+            "It makes each item clickable",
+            "It sorts the list alphabetically"
+          ],
+          answer: 0,
+          explanation: "Keys help React match items across renders, especially when lists change."
+        },
+        {
+          question: "What does it mean for an input to be controlled?",
+          choices: [
+            "Its value is driven by React state",
+            "It cannot be edited by a user",
+            "It is styled with a CSS class",
+            "It only works inside a form"
+          ],
+          answer: 0,
+          explanation: "A controlled input receives its value from state and updates through an event handler."
+        },
+        {
+          question: "What is the purpose of the children prop?",
+          choices: [
+            "To render content nested between a component's tags",
+            "To store a component's state history",
+            "To list a component's child files",
+            "To pass styles to the browser"
+          ],
+          answer: 0,
+          explanation: "The children prop contains the content placed inside a component in JSX."
+        },
+        {
+          question: "What does useContext help a component do?",
+          choices: [
+            "Read a value provided by a context",
+            "Create a new browser window",
+            "Prevent all future renders",
+            "Turn JSX into CSS"
+          ],
+          answer: 0,
+          explanation: "useContext reads and subscribes to a value from the nearest matching context provider."
+        },
+        {
+          question: "What is JSX?",
+          choices: [
+            "A syntax extension that lets you write markup-like code in JavaScript",
+            "A replacement for JavaScript",
+            "A browser's built-in database",
+            "A React-only CSS format"
+          ],
+          answer: 0,
+          explanation: "JSX is syntax commonly used with React; build tools transform it into JavaScript."
+        }
+      ];
+
+      function Header() {
+        return (
+          <header className="app-header">
+            <div className="react-mark" aria-hidden="true">⚛</div>
+            <h1 className="brand">The <span>React</span> Quiz</h1>
+          </header>
+        );
+      }
+
+      function App() {
+        const [answers, setAnswers] = React.useState({});
+        const [finished, setFinished] = React.useState(false);
+        const answeredCount = Object.keys(answers).length;
+        const score = questions.reduce(
+          (total, item, index) => total + (answers[index] === item.answer ? 1 : 0),
+          0
+        );
+
+        function chooseAnswer(questionIndex, choiceIndex) {
+          if (finished) return;
+          setAnswers((current) => ({ ...current, [questionIndex]: choiceIndex }));
+        }
+
+        function finishQuiz() {
+          if (answeredCount === questions.length) setFinished(true);
+        }
+
+        function restartQuiz() {
+          setAnswers({});
+          setFinished(false);
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+
+        return (
+          <main className="app-shell">
+            <Header />
+            <section className="intro" aria-labelledby="page-title">
+              <p className="eyebrow">Test your knowledge</p>
+              <h2 id="page-title">How well do you know React?</h2>
+              <p>Choose one answer for each question. Your score and answer-by-answer results appear when you finish.</p>
+            </section>
+
+            {finished && (
+              <section className="results-banner" aria-live="polite">
+                <div>
+                  <h3>{score === questions.length ? "Perfect score!" : "Quiz complete!"}</h3>
+                  <p>
+                    You got {score} out of {questions.length} correct.
+                    {score === questions.length ? " You're a React pro." : " Review the answers below and give it another try."}
+                  </p>
+                </div>
+                <div className="score" aria-label={`${score} out of ${questions.length}`}>
+                  {score}/{questions.length}
+                </div>
+              </section>
+            )}
+
+            <section className="quiz-card" aria-label="React quiz questions">
+              <div className="quiz-top">
+                <div className="progress-row">
+                  <span><strong>{answeredCount}</strong> of {questions.length} answered</span>
+                  <span>{finished ? "Results" : "Multiple choice"}</span>
+                </div>
+                <div
+                  className="progress-track"
+                  role="progressbar"
+                  aria-label="Questions answered"
+                  aria-valuemin="0"
+                  aria-valuemax={questions.length}
+                  aria-valuenow={answeredCount}
+                >
+                  <div className="progress-fill" style={{ width: `${(answeredCount / questions.length) * 100}%` }} />
+                </div>
+              </div>
+
+              <div className="question-list">
+                {questions.map((item, questionIndex) => {
+                  const selected = answers[questionIndex];
+                  const isCorrect = selected === item.answer;
+                  return (
+                    <fieldset className="question" key={questionIndex} style={{ border: 0, margin: 0, minWidth: 0 }}>
+                      <legend className="question-title">
+                        <span className="question-number">{String(questionIndex + 1).padStart(2, "0")}</span>
+                        <span>{item.question}</span>
+                      </legend>
+                      <div className="choices">
+                        {item.choices.map((choice, choiceIndex) => {
+                          const isSelected = selected === choiceIndex;
+                          const isAnswer = item.answer === choiceIndex;
+                          let stateClass = "";
+                          let indicator = String.fromCharCode(65 + choiceIndex);
+                          if (finished && isAnswer) {
+                            stateClass = " correct";
+                            indicator = "✓";
+                          } else if (finished && isSelected && !isCorrect) {
+                            stateClass = " incorrect";
+                            indicator = "×";
+                          } else if (isSelected) {
+                            stateClass = " selected";
+                            indicator = "•";
+                          }
+                          return (
+                            <button
+                              className={`choice${stateClass}`}
+                              type="button"
+                              key={choice}
+                              onClick={() => chooseAnswer(questionIndex, choiceIndex)}
+                              aria-pressed={isSelected}
+                              disabled={finished}
+                            >
+                              <span className="choice-indicator" aria-hidden="true">{indicator}</span>
+                              <span className="choice-key">{choice}</span>
+                            </button>
+                          );
+                        })}
+                      </div>
+                      {finished && (
+                        <p className="answer-note">
+                          {isCorrect
+                            ? `✓ Correct. ${item.explanation}`
+                            : `✗ Your answer: ${item.choices[selected]}. Correct answer: ${item.choices[item.answer]}. ${item.explanation}`}
+                        </p>
+                      )}
+                    </fieldset>
+                  );
+                })}
+              </div>
+
+              <footer className="quiz-footer">
+                <p className="footer-hint">
+                  {finished
+                    ? "Your answers are shown above with the correct choices."
+                    : answeredCount < questions.length
+                      ? `Answer ${questions.length - answeredCount} more ${questions.length - answeredCount === 1 ? "question" : "questions"} to see your results.`
+                      : "All done — ready to check your answers?"}
+                </p>
+                {finished ? (
+                  <button className="secondary-button" type="button" onClick={restartQuiz}>Try again</button>
+                ) : (
+                  <button
+                    className="primary-button"
+                    type="button"
+                    onClick={finishQuiz}
+                    disabled={answeredCount !== questions.length}
+                  >
+                    Finish quiz
+                  </button>
+                )}
+              </footer>
+            </section>
+          </main>
+        );
+      }
+
+      ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+    </script>
+  </body>
+</html>
