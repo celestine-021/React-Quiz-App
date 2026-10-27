@@ -410,7 +410,7 @@
   <body>
     <div id="root"></div>
     <script type="text/babel">
-      const questions = [
+      const questionBank = [
         {
           question: "What is React primarily used for?",
           choices: [
@@ -515,8 +515,199 @@
           ],
           answer: 0,
           explanation: "JSX is syntax commonly used with React; build tools transform it into JavaScript."
+        },
+        {
+          question: "How do you render each item in an array as UI?",
+          choices: ["Call the array's map method", "Use an if statement only", "Call useEffect", "Put the array in a CSS rule"],
+          answer: 0,
+          explanation: "Mapping an array to JSX is a common way to render a collection of elements."
+        },
+        {
+          question: "What is a React Fragment used for?",
+          choices: ["Grouping elements without adding a DOM wrapper", "Fetching data from an API", "Storing component state", "Styling a component"],
+          answer: 0,
+          explanation: "Fragments let a component return multiple sibling elements without an extra DOM node."
+        },
+        {
+          question: "What does useRef return?",
+          choices: ["A mutable ref object", "A new component", "A list of props", "A promise that resolves after rendering"],
+          answer: 0,
+          explanation: "useRef returns an object whose current property persists between renders without triggering a render when changed."
+        },
+        {
+          question: "When is useMemo most useful?",
+          choices: ["When caching an expensive calculation between renders", "When fetching every image", "When declaring component props", "When replacing all state"],
+          answer: 0,
+          explanation: "useMemo can cache a calculated value until one of its dependencies changes."
+        },
+        {
+          question: "What does useCallback memoize?",
+          choices: ["A function reference", "A DOM element", "A CSS selector", "A state update"],
+          answer: 0,
+          explanation: "useCallback preserves a function reference until its dependencies change."
+        },
+        {
+          question: "What does lifting state up mean?",
+          choices: ["Moving shared state to a common parent", "Moving CSS into JavaScript", "Turning state into props permanently", "Moving a component into the DOM"],
+          answer: 0,
+          explanation: "A common parent can own state that needs to be shared by multiple child components."
+        },
+        {
+          question: "What is a good way to update an object stored in React state?",
+          choices: ["Create a new object with the changed value", "Mutate the existing object directly", "Change the DOM instead", "Reassign the component function"],
+          answer: 0,
+          explanation: "Creating a new object makes the state change observable to React and preserves immutable update patterns."
+        },
+        {
+          question: "When should you use a functional state updater?",
+          choices: ["When the next state depends on the previous state", "Whenever you render a heading", "Only inside CSS", "When declaring a context"],
+          answer: 0,
+          explanation: "An updater such as setCount(current => current + 1) uses the latest queued state value."
+        },
+        {
+          question: "Why might an effect return a cleanup function?",
+          choices: ["To unsubscribe or release resources when the effect is replaced or removed", "To change a component's props", "To render a second root", "To prevent JSX from compiling"],
+          answer: 0,
+          explanation: "Effect cleanup is used for work such as removing event listeners, clearing timers, or unsubscribing."
+        },
+        {
+          question: "What does an empty dependency array in useEffect indicate?",
+          choices: ["The effect has no reactive dependencies", "The effect runs after every state update", "The component has no props", "The effect is disabled"],
+          answer: 0,
+          explanation: "An empty dependency array means the effect does not depend on changing reactive values; development Strict Mode may run setup and cleanup an extra time."
+        },
+        {
+          question: "How can a component conditionally render different content?",
+          choices: ["Use JavaScript conditions such as a ternary or &&", "Use a key prop only", "Use a CSS comment", "Call createRoot again"],
+          answer: 0,
+          explanation: "React lets you use regular JavaScript conditional expressions to decide what JSX to return."
+        },
+        {
+          question: "How should a click handler be provided to a React button?",
+          choices: ["Pass a function to onClick", "Pass a CSS class to onClick", "Use onclick as a string", "Call the function while rendering"],
+          answer: 0,
+          explanation: "React event props such as onClick receive a function that React calls when the event occurs."
+        },
+        {
+          question: "What is React StrictMode for?",
+          choices: ["Highlighting potential problems during development", "Making a site private", "Preventing all rerenders", "Replacing production builds"],
+          answer: 0,
+          explanation: "StrictMode enables additional development-only checks to help find unsafe patterns."
+        },
+        {
+          question: "What does a context provider do?",
+          choices: ["Makes a value available to descendant components", "Creates a new browser tab", "Automatically saves state to a server", "Replaces every component prop"],
+          answer: 0,
+          explanation: "Components below a provider can read the provided value with useContext."
+        },
+        {
+          question: "What naming convention should a custom Hook follow?",
+          choices: ["Its name should start with use", "Its name must end with Component", "It must be named after a DOM tag", "It must start with handle"],
+          answer: 0,
+          explanation: "Custom Hooks should start with use so React tooling can check the Rules of Hooks."
+        },
+        {
+          question: "What does useReducer provide?",
+          choices: ["State managed with a reducer and dispatch function", "Automatic CSS modules", "A way to define HTML attributes", "A replacement for JSX"],
+          answer: 0,
+          explanation: "useReducer is useful when state transitions are handled by a reducer function."
+        },
+        {
+          question: "What is prop drilling?",
+          choices: ["Passing props through several layers to reach a descendant", "Updating a prop with CSS", "Removing a component from the page", "Rendering a list without keys"],
+          answer: 0,
+          explanation: "Context or component composition can help when data otherwise has to pass through many intermediate components."
+        },
+        {
+          question: "Where should a key be placed when rendering a list?",
+          choices: ["On the outermost element returned for each item", "On the parent component only", "Inside a CSS selector", "On the React root"],
+          answer: 0,
+          explanation: "The key belongs on the top-level element produced for each item in the mapped list."
+        },
+        {
+          question: "What happens when a component is removed from the UI tree?",
+          choices: ["It unmounts and its effects can be cleaned up", "Its props become global", "It is converted into a Hook", "Its state is copied to every sibling"],
+          answer: 0,
+          explanation: "Unmounting removes a component from the tree and runs effect cleanup functions."
+        },
+        {
+          question: "What normally causes a function component to render again?",
+          choices: ["A relevant state, prop, or context update", "A CSS class name", "A comment in JSX", "A file being opened in an editor"],
+          answer: 0,
+          explanation: "React renders components in response to updates such as changed state, props, or context."
+        },
+        {
+          question: "What does React.memo do?",
+          choices: ["Can skip rendering when props have not changed", "Stores state between browser sessions", "Memoizes every event automatically", "Creates a context provider"],
+          answer: 0,
+          explanation: "React.memo can skip a component render when its props are equal to the previous render's props."
+        },
+        {
+          question: "What is React.lazy commonly used for?",
+          choices: ["Loading a component on demand", "Updating state without rendering", "Creating a list key", "Handling form submissions"],
+          answer: 0,
+          explanation: "React.lazy lets a component be loaded dynamically, usually with Suspense to show a loading fallback."
+        },
+        {
+          question: "What is an Error Boundary designed to catch?",
+          choices: ["Rendering errors in descendant components", "Every network error everywhere", "Errors in event handlers automatically", "CSS validation warnings"],
+          answer: 0,
+          explanation: "Error Boundaries display fallback UI for errors thrown while rendering their descendant tree."
+        },
+        {
+          question: "What does createPortal let you do?",
+          choices: ["Render children into a different DOM node", "Create a new React state hook", "Fetch a component from an API", "Change a component's key"],
+          answer: 0,
+          explanation: "Portals render UI elsewhere in the DOM while preserving its place in the React tree."
+        },
+        {
+          question: "What is hydration in React?",
+          choices: ["Attaching React behavior to server-rendered HTML", "Clearing all browser storage", "Converting props into state", "Loading a CSS file"],
+          answer: 0,
+          explanation: "Hydration makes existing server-rendered markup interactive on the client."
+        },
+        {
+          question: "What is server-side rendering?",
+          choices: ["Rendering UI to HTML on a server", "Rendering only after a button click", "Saving state in a database", "Running CSS in a browser extension"],
+          answer: 0,
+          explanation: "Server-side rendering produces HTML on the server before it is sent to the browser."
+        },
+        {
+          question: "What does event.preventDefault() do in a form submit handler?",
+          choices: ["Prevents the browser's default form submission behavior", "Prevents React from rendering again", "Clears all form state", "Disables the submit button permanently"],
+          answer: 0,
+          explanation: "Calling preventDefault stops the browser's default action, letting the app handle submission."
+        },
+        {
+          question: "When might useLayoutEffect be needed instead of useEffect?",
+          choices: ["When layout work must happen before the browser paints", "When an effect should run only on a server", "When declaring a child component", "When changing a list key"],
+          answer: 0,
+          explanation: "useLayoutEffect runs after DOM updates but before paint, which can help measure layout without showing an intermediate frame."
+        },
+        {
+          question: "What does React reconciliation determine?",
+          choices: ["Which parts of the UI need updating after a render", "Which CSS files to download", "Which props should become state", "Which components are allowed to use Hooks"],
+          answer: 0,
+          explanation: "React compares the rendered tree with the previous one to determine the updates needed in the UI."
+        },
+        {
+          question: "What is an uncontrolled input?",
+          choices: ["An input whose current value is held by the DOM", "An input that cannot receive focus", "An input with no HTML element", "An input always controlled by context"],
+          answer: 0,
+          explanation: "Uncontrolled inputs keep their current value in the DOM and can be accessed with a ref."
         }
       ];
+
+      const QUESTIONS_PER_ROUND = 10;
+
+      function shuffleQuestions(items) {
+        const shuffled = [...items];
+        for (let index = shuffled.length - 1; index > 0; index -= 1) {
+          const swapIndex = Math.floor(Math.random() * (index + 1));
+          [shuffled[index], shuffled[swapIndex]] = [shuffled[swapIndex], shuffled[index]];
+        }
+        return shuffled;
+      }
 
       function Header() {
         return (
@@ -528,8 +719,13 @@
       }
 
       function App() {
+        const [questionDeck, setQuestionDeck] = React.useState(() => shuffleQuestions(questionBank));
+        const [deckStart, setDeckStart] = React.useState(0);
+        const [roundNumber, setRoundNumber] = React.useState(1);
         const [answers, setAnswers] = React.useState({});
         const [finished, setFinished] = React.useState(false);
+        const [roundNotice, setRoundNotice] = React.useState(false);
+        const questions = questionDeck.slice(deckStart, deckStart + QUESTIONS_PER_ROUND);
         const answeredCount = Object.keys(answers).length;
         const score = questions.reduce(
           (total, item, index) => total + (answers[index] === item.answer ? 1 : 0),
@@ -538,16 +734,40 @@
 
         function chooseAnswer(questionIndex, choiceIndex) {
           if (finished) return;
+          setRoundNotice(false);
           setAnswers((current) => ({ ...current, [questionIndex]: choiceIndex }));
         }
 
         function finishQuiz() {
-          if (answeredCount === questions.length) setFinished(true);
+          if (answeredCount !== questions.length) return;
+          if (score !== questions.length) {
+            setFinished(true);
+            return;
+          }
+
+          const nextDeckStart = deckStart + QUESTIONS_PER_ROUND;
+          if (nextDeckStart >= questionBank.length) {
+            const questionsFromPreviousRound = new Set(questions);
+            const unseenQuestions = questionBank.filter((item) => !questionsFromPreviousRound.has(item));
+            setQuestionDeck([
+              ...shuffleQuestions(unseenQuestions),
+              ...shuffleQuestions(questions)
+            ]);
+            setDeckStart(0);
+          } else {
+            setDeckStart(nextDeckStart);
+          }
+          setRoundNumber((current) => current + 1);
+          setAnswers({});
+          setFinished(false);
+          setRoundNotice(true);
+          window.scrollTo({ top: 0, behavior: "smooth" });
         }
 
         function restartQuiz() {
           setAnswers({});
           setFinished(false);
+          setRoundNotice(false);
           window.scrollTo({ top: 0, behavior: "smooth" });
         }
 
@@ -555,19 +775,26 @@
           <main className="app-shell">
             <Header />
             <section className="intro" aria-labelledby="page-title">
-              <p className="eyebrow">Test your knowledge</p>
+              <p className="eyebrow">Test your knowledge · Round {roundNumber}</p>
               <h2 id="page-title">How well do you know React?</h2>
-              <p>Choose one answer for each question. Your score and answer-by-answer results appear when you finish.</p>
+              <p>Answer all 10 questions correctly and submit to unlock a fresh round. Each round covers a mix of React topics.</p>
             </section>
+
+            {roundNotice && (
+              <section className="results-banner" aria-live="polite">
+                <div>
+                  <h3>Perfect score! New questions unlocked.</h3>
+                  <p>You got all 10 correct. Keep going with round {roundNumber}.</p>
+                </div>
+                <div className="score" aria-label="10 out of 10">10/10</div>
+              </section>
+            )}
 
             {finished && (
               <section className="results-banner" aria-live="polite">
                 <div>
-                  <h3>{score === questions.length ? "Perfect score!" : "Quiz complete!"}</h3>
-                  <p>
-                    You got {score} out of {questions.length} correct.
-                    {score === questions.length ? " You're a React pro." : " Review the answers below and give it another try."}
-                  </p>
+                  <h3>Round not passed yet</h3>
+                  <p>You got {score} out of {questions.length} correct. Review the answers and retry this same round to unlock new questions.</p>
                 </div>
                 <div className="score" aria-label={`${score} out of ${questions.length}`}>
                   {score}/{questions.length}
@@ -579,7 +806,7 @@
               <div className="quiz-top">
                 <div className="progress-row">
                   <span><strong>{answeredCount}</strong> of {questions.length} answered</span>
-                  <span>{finished ? "Results" : "Multiple choice"}</span>
+                  <span>{finished ? "Results" : "10-question round"}</span>
                 </div>
                 <div
                   className="progress-track"
@@ -598,7 +825,7 @@
                   const selected = answers[questionIndex];
                   const isCorrect = selected === item.answer;
                   return (
-                    <fieldset className="question" key={questionIndex} style={{ border: 0, margin: 0, minWidth: 0 }}>
+                    <fieldset className="question" key={`${roundNumber}-${item.question}`} style={{ border: 0, margin: 0, minWidth: 0 }}>
                       <legend className="question-title">
                         <span className="question-number">{String(questionIndex + 1).padStart(2, "0")}</span>
                         <span>{item.question}</span>
@@ -649,13 +876,13 @@
               <footer className="quiz-footer">
                 <p className="footer-hint">
                   {finished
-                    ? "Your answers are shown above with the correct choices."
+                    ? "You need a perfect score to continue. Try this round again."
                     : answeredCount < questions.length
-                      ? `Answer ${questions.length - answeredCount} more ${questions.length - answeredCount === 1 ? "question" : "questions"} to see your results.`
-                      : "All done — ready to check your answers?"}
+                      ? `Answer ${questions.length - answeredCount} more ${questions.length - answeredCount === 1 ? "question" : "questions"} before submitting.`
+                      : "All 10 answered — submit to check your score."}
                 </p>
                 {finished ? (
-                  <button className="secondary-button" type="button" onClick={restartQuiz}>Try again</button>
+                  <button className="secondary-button" type="button" onClick={restartQuiz}>Retry this round</button>
                 ) : (
                   <button
                     className="primary-button"
@@ -663,7 +890,7 @@
                     onClick={finishQuiz}
                     disabled={answeredCount !== questions.length}
                   >
-                    Finish quiz
+                    Submit answers
                   </button>
                 )}
               </footer>
